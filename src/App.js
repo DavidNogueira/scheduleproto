@@ -38,7 +38,7 @@ function App() {
   }, []);
 
   return (
-    <div className="App" style={{}}>
+    <div className="App" style={{ height: "100%" }}>
       <SC.Container>
         <SC.Board>
           {[
@@ -67,6 +67,7 @@ function App() {
                 style={{
                   display: "flex",
                   flexDirection: "column",
+                  height: "100%",
                 }}
               >
                 {/**a column */}
@@ -100,11 +101,12 @@ function App() {
                   {});
 
                   return (
-                    <div style={{ background: "green" }}>
+                    <div style={{ background: "green", height: "100%" }}>
                       <div
                         style={{
                           background: "pink",
                           display: "flex",
+                          height: '100%',
                         }}
                       >
                         {videoList?.map((c, index2) => {

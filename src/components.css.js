@@ -3,10 +3,12 @@ import styled from "styled-components";
 export const Container = styled.div`
   flex-wrap: nowrap;
   overflow-x: auto;
+  height: 100%;
 `;
 export const Board = styled.div`
   display: flex;
   width: fit-content;
+  height:100%;
 `;
 export const Column = styled.div`
   width: 240px;
