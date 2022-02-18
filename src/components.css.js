@@ -1,14 +1,15 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  flex-wrap: nowrap;
   overflow-x: auto;
   height: 100%;
+  display: flex;
+  position: relative;
 `;
 export const Board = styled.div`
   display: flex;
   width: fit-content;
-  height:100%;
+  height: 100%;
 `;
 export const Column = styled.div`
   width: 240px;
@@ -33,4 +34,11 @@ export const ColumnHeader = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 25px;
+`;
+export const ShortLine = styled.div`
+  align-self: center;
+  width: 1px;
+  height: 5px;
+  background: grey;
 `;

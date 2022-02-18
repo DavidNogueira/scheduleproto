@@ -18,8 +18,6 @@ function App() {
 
     fetchData();
   }, []);
-  const chanel_pict =
-    "https://images.pexels.com/photos/34153/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350";
   const [minutesPersentage, setMinutesPersentage] = React.useState(new Date());
   const myRef = React.useRef(null);
   const executeScroll = () =>
@@ -30,10 +28,10 @@ function App() {
     });
 
   React.useEffect(() => {
-    let bili = setInterval(() => setMinutesPersentage(new Date()), 10000);
+    let interval = setInterval(() => setMinutesPersentage(new Date()), 10000);
 
     return function cleanup() {
-      clearInterval(bili);
+      clearInterval(interval);
     };
   }, []);
 
@@ -44,24 +42,17 @@ function App() {
           {[
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
             19, 20, 21, 22, 23,
-          ].map((a, index0) => (
+          ].map((hour) => (
             <SC.Column>
               {/**this function makes the margin being the same size of the minutes */}
-              {a === minutesPersentage.getHours() ? (
+              {hour === minutesPersentage.getHours() ? (
                 <div ref={myRef} style={{ width: "100%" }}>
                   <SC.MovingLine minutes={minutesPersentage} />
                 </div>
               ) : null}
               <SC.ColumnHeader>
-                <div>{a}</div>
-                <div
-                  style={{
-                    alignSelf: "center",
-                    width: "1px",
-                    height: "13px",
-                    background: "yellow",
-                  }}
-                ></div>
+                <div>{`${hour > 9 ? hour : "0" + hour}:00`}</div>
+                <SC.ShortLine />
               </SC.ColumnHeader>
               <div
                 style={{
@@ -71,51 +62,44 @@ function App() {
                 }}
               >
                 {/**a column */}
-                {advice.map((b, index1) => {
+                {advice.map((b) => {
                   const videoList = [];
-
-                  let fruits = [...b.schedules].reduce(function (
-                    fruitsCount,
-                    currentFruit
-                  ) {
+                  [...b.schedules].reduce(function (videoCount, currentVideo) {
                     if (
-                      typeof fruitsCount[
-                        new Date(currentFruit.start).getHours()
+                      typeof videoCount[
+                        new Date(currentVideo.start).getHours()
                       ] !== "undefined"
                     ) {
-                      fruitsCount[new Date(currentFruit.start).getHours()]++;
+                      videoCount[new Date(currentVideo.start).getHours()]++;
                       videoList.push({
-                        ...currentFruit,
+                        ...currentVideo,
                         place: false,
                       });
-                      return fruitsCount;
+                      return videoCount;
                     } else {
-                      fruitsCount[new Date(currentFruit.start).getHours()] = 1;
+                      videoCount[new Date(currentVideo.start).getHours()] = 1;
                       videoList.push({
-                        ...currentFruit,
+                        ...currentVideo,
                         place: true,
                       });
-                      return fruitsCount;
+                      return videoCount;
                     }
-                  },
-                  {});
+                  }, {});
 
                   return (
-                    <div style={{ background: "green", height: "100%" }}>
+                    <div style={{ height: "100%" }}>
                       <div
                         style={{
-                          background: "pink",
                           display: "flex",
-                          height: '100%',
+                          height: "100%",
                         }}
                       >
-                        {videoList?.map((c, index2) => {
+                        {videoList?.map((video, index) => {
                           const ml =
-                            new Date(videoList[index2].start)?.getMinutes() * 4;
-
-                          if (new Date(c.start).getHours() === a) {
-                            const startDate = new Date(c.start);
-                            const endDate = new Date(c.end);
+                            new Date(videoList[index].start)?.getMinutes() * 4;
+                          if (new Date(video.start).getHours() === hour) {
+                            const startDate = new Date(video.start);
+                            const endDate = new Date(video.end);
                             const diff = ((endDate - startDate) / 60000) * 4;
 
                             return (
@@ -123,7 +107,7 @@ function App() {
                                 style={{
                                   minWidth: `${diff}px`,
                                   zIndex: "1",
-                                  marginLeft: c.place && `${ml}px`,
+                                  marginLeft: video.place && `${ml}px`,
                                   border: "0.5px grey solid",
                                   background: "#333",
                                   color: "#ddd",
@@ -132,7 +116,7 @@ function App() {
                                   flexDirection: "column",
                                 }}
                               >
-                                <div>{c.title}</div>
+                                <div>{video.title}</div>
                                 <div
                                   style={{
                                     display: "flex",
@@ -145,8 +129,7 @@ function App() {
                                   >
                                     {`${startDate.getHours()}:${startDate.getMinutes()}`}
                                   </div>
-                                  <div style={{}}>-</div>
-
+                                  <div>-</div>
                                   <div
                                     style={{
                                       display: "flex",
@@ -167,27 +150,6 @@ function App() {
             </SC.Column>
           ))}
         </SC.Board>
-
-        <aside style={{ position: "absolute", top: "0", zIndex: "2" }}>
-          <div
-            style={{
-              background: `black`,
-              height: "34px",
-              width: "40px",
-            }}
-          />
-          {advice.map((a) => {
-            return (
-              <div
-                style={{
-                  background: `url(${chanel_pict}) no-repeat center/cover`,
-                  height: "61px",
-                  width: "40px",
-                }}
-              />
-            );
-          })}
-        </aside>
       </SC.Container>
 
       <button
@@ -203,6 +165,7 @@ function App() {
           borderRadius: "50px",
           textAlign: "center",
           boxShadow: "2px 2px 3px #999",
+          zIndex: "1",
         }}
       >
         NOW
